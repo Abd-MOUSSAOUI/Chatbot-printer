@@ -3,6 +3,7 @@ import numpy as np
 import random
 
 from utils import tokenize, bag_of_words, stem
+from model import Nnt
 
 import torch
 import torch.nn as nn
@@ -52,13 +53,11 @@ Y_train = np.array(Y_train)
 
 # Hyper-parameters 
 num_epochs = 1000
-batch_size = 8
+batch_size = 10
 learning_rate = 0.001
 input_size = len(X_train[0])
-hidden_size = 8
+hidden_size = 10
 output_size = len(tags)
-print(input_size, output_size)
-
 
 class ChatDataset(Dataset):
 
@@ -74,23 +73,6 @@ class ChatDataset(Dataset):
     def __len__(self):
         return self.n_samples
 
-
-class NeuralNet(nn.Module):
-    def __init__(self, input_size, hidden_size, num_classes):
-        super(NeuralNet, self).__init__()
-        self.l1 = nn.Linear(input_size, hidden_size) 
-        self.l2 = nn.Linear(hidden_size, hidden_size) 
-        self.l3 = nn.Linear(hidden_size, num_classes)
-        self.relu = nn.ReLU()
-    
-    def forward(self, x):
-        out = self.l1(x)
-        out = self.relu(out)
-        out = self.l2(out)
-        out = self.relu(out)
-        out = self.l3(out)
-        return out
-
 dataset = ChatDataset()
 train_loader = DataLoader(dataset=dataset,
                           batch_size=batch_size,
@@ -100,7 +82,7 @@ train_loader = DataLoader(dataset=dataset,
 
 
 
-model = NeuralNet(input_size, hidden_size, output_size)
+model = Nnt(input_size, hidden_size, output_size)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -121,4 +103,14 @@ for epoch in range(num_epochs):
     if (epoch+1) % 100 == 0:
         print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
 
+data = {
+"model_state": model.state_dict(),
+"input_size": input_size,
+"hidden_size": hidden_size,
+"output_size": output_size,
+"all_words": all_words,
+"tags": tags
+}
 
+FILE = "data.pth"
+torch.save(data, FILE)

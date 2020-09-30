@@ -13,34 +13,24 @@
       ]
     },
     {
-      "tag": "thnx",
-      "patterns": [
-        "Merci", "Merci au revoir"
-      ],
-      "responses": [
-        "À votre service, au revoir :)",
-        "Merci à vous, au revoir :)"
-      ]
-    },
-    {
       "tag": "print",
       "patterns": [
         "Bonjour, je veux imprimer un document qui s'appelle doc1 et qui contient 1243 pages, merci.",
-        "je veux imprimer un document qui s'appelle doc2 et qui contient 1243 pages",
+        "j'ai envie de print un document qui s'appelle doc2 et qui contient 1243 pages",
         "imprime moi doc qui à 907868 pages",
-        "imprimer doc5 897 page",
-        "Bonjour, je veux imprimer doc17 qui contient 1800 pages",
+        "imprime doc5 897 page",
+        "Je veux imprimer doc17 qui contient 1800 pages",
         "Bonjour, imprime moi doc3 qui contient 4500 pages",
         "Impression doc7 4500 pages",
         "imprime doc9 234 page",
-        "imprimer le document doc4 qui à 12 pages"
+        "imprimer le document doc4 qui à 120 pages"
       ],
       "responses": [
-        "Votre demande est prise en compte, merci.",
-        "Compter sur moi pour le faire ;)",
-        "C'est bon, votre document va être imprimer dès que possible..",
-        "Ok ! Merci pour votre demande.",
-        "Ok !"
+        "Votre demande est prise en compte, bonne journée.",
+        "Compter sur moi pour le faire ;) , au revoir",
+        "C'est bon, votre document va être imprimer dès que possible.. au revoir",
+        "Ok ! Merci pour votre demande. Ciao",
+        "Ok ! Bye"
       ]
     },
     {
@@ -50,13 +40,13 @@
         "Pouvez-vous m'aider svp",
         "Aidez moi",
         "help",
-        "Aide"
+        "j'ai besoin d'aide"
       ],
       "responses": [
-        "Bonjour, je suis un Chatbot qui organise l'impression des documents. Je peux vous aidez à imprimer un documents pour cela, il suffit juste de me dire le nom du documents et combien de pages cotient.. Par ex: 'je veux imprimer Doc1 qui à 2345 pages'",
-        "Il suffit juste de me dire le nom du document et combien de pages cotient.. Par ex: 'je veux imprimer Doc1 qui à 2345 pages'",
-        "Oui bien sur, dites moi le nom du document que vous voulez imprimer et combien de pages il contient svp",
-        "Avec plaisir, dites moi quel document et le nombre de pages qu'il contient."
+        "Bonjour, je suis un Chatbot qui organise l'impression des documents. \n\tJe peux vous aidez à imprimer un documents \n\tPour cela, il suffit juste de me dire le nom du documents et combien de pages cotient.. \n\tPar ex: 'je veux imprimer Doc1 qui à 2345 pages'",
+        "Il suffit juste de me dire le nom du document et combien de pages cotient.. \n\tPar ex: 'je veux imprimer Doc1 qui à 2345 pages'",
+        "Demander moi d'imprimer un document et n'oubliez pas de me dire combien de pages il contient svp",
+        "Dites moi d'imprimer un document et dites moi le nombre de pages qu'il contient."
       ]
     },
     {
@@ -65,7 +55,7 @@
         ""
       ],
       "responses": [
-        "Bonjour, je suis un Chatbot qui organise l'impression des documents. Je peux vous aidez à imprimer un documents pour cela, il suffit juste de me dire le nom du documents et combien de pages cotient.. Par ex: 'je veux imprimer Doc1 qui à 2345 pages'"
+        "\n\tI don't understand... tape 'help' to see what i can do"
       ]
     }
   ]

@@ -11,6 +11,13 @@ pip3 install nltk numpy torch
 ```
 ## Usage
 
+Il faut entrainer le model avant d'utiliser le chatbot pour cela taper:
+
 ```bash
-todo
+python3 train.py
+```
+Pour lancer le chatbot taper:
+
+```bash
+python3 chatbot.py
 ```

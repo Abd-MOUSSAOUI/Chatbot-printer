@@ -31,16 +31,18 @@ counter = 0
 bot_name = "Printer-Bot"
 print("\t --> Bonjour, je suis un Chatbot qui organise l'impression des document. \n\tJe peux vous aidez à imprimer un documents \n\tPour cela, il suffit juste de me dire le nom du documents et combien de pages il cotient.. \n\tPar ex: je veux imprimer Doc1 qui cotient 2345 pages\n\n\tTape quit or bye pour sortir")
 
-report = open("report.txt", "a")
-agenda = open("agenda.txt", "a")
-
 
 while True:
+    report = open("report.txt", "a")
+    agenda = open("agenda.txt", "a")
+    
     sentence = input("You: ")
     if (sentence == "quit" or sentence == "bye"):
         print("Printer-Bot: Au revoir :)")
         break
+    
     date = datetime.datetime.now()
+    
     sent = tokenize(sentence)
     X = bag_of_words(sent, all_words)
     X = X.reshape(1, X.shape[0])
@@ -57,8 +59,10 @@ while True:
                 print(f"{bot_name}: {random.choice(intent['responses'])}")
     else:
         tag = "other"
-        print(f"{bot_name}: Sorry ! I don't understand... tape 'help' to see what i can do")
-    report.write("\n" + sentence +"\t" + str(date)+"\t" + tag + "\n")
+        print(f"{bot_name}: \n\tSorry ! I don't understand... tape 'help' to see what i can do")
+    
+    report.write("\n" +'"'+ sentence +'"'+ "\t" + str(date)+"\t" + tag + "\n")
+    
     if tag == 'print':
         time = nbr_pages = 0
         for word in sent:
@@ -69,8 +73,9 @@ while True:
             counter = time + nbr_pages
         else:
             counter = counter + nbr_pages
+    
     # trosform seconds to time
     # str(datetime.timedelta(seconds=666))
 
-report.close()
-agenda.close()
+    report.close()
+    agenda.close()

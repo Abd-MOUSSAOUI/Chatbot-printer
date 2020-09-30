@@ -18,11 +18,15 @@
         "Bonjour, je veux imprimer un document qui s'appelle doc1 et qui contient 1243 pages, merci.",
         "j'ai envie de print un document qui s'appelle doc2 et qui contient 1243 pages",
         "imprime moi doc qui à 907868 pages",
-        "imprime doc5 897 page",
+        "imprime doc 897 page",
         "Je veux imprimer doc17 qui contient 1800 pages",
         "Bonjour, imprime moi doc3 qui contient 4500 pages",
         "Impression doc7 4500 pages",
+        "Impression doc qui contient 999 pages",
         "imprime doc9 234 page",
+        "tirage doc1 789 pages",
+        "je veux tirer doc6 qui contient 800 p",
+        "tirage le document doc4 à 1800 pages",
         "imprimer le document doc4 qui à 120 pages"
       ],
       "responses": [
@@ -55,7 +59,7 @@
         ""
       ],
       "responses": [
-        "\n\tI don't understand... tape 'help' to see what i can do"
+        "\n\tSorry ! I don't understand... tape 'help' to see what i can do"
       ]
     }
   ]

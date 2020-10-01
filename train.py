@@ -2,6 +2,9 @@ import json
 import numpy as np
 import random
 
+import nltk
+nltk.download('punkt')
+
 from utils import tokenize, bag_of_words, stem
 from model import Nnt
 
@@ -10,21 +13,21 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
 
-with open("intents.json", "r") as fl:
-    intents = json.load(fl)
+with open("intents.json", "r") as f:
+    intents = json.load(f)
 
 #print(intents)
 
 all_words = []
 tags = []
-xy = []
+x_y = []
 for inten in intents["intents"]:
     tag = inten["tag"]
     tags.append(tag)
     for pattern in inten["patterns"]:
         wrd = tokenize(pattern)
         all_words.extend(wrd)
-        xy.append((wrd, tag))
+        x_y.append((wrd, tag))
 
 # ignore some symbols
 ignore_sym = ['?', '.', '!', ',', "'", '-']
@@ -33,7 +36,7 @@ all_words = [stem(wrd) for wrd in all_words if wrd not in ignore_sym]
 all_words = sorted(set(all_words))
 tags = sorted(set(tags))
 
-#print(len(xy), "patterns")
+#print(len(x_y), "patterns")
 #print(len(tags), "tags:", tags)
 #print(len(all_words), "unique words:", all_words)
 
@@ -41,7 +44,7 @@ tags = sorted(set(tags))
 # Creating data-set
 X_train = []
 Y_train = []
-for (ptrn_sent, tag) in xy:
+for (ptrn_sent, tag) in x_y:
     bag = bag_of_words(ptrn_sent, all_words)
     X_train.append(bag)
     label = tags.index(tag)
@@ -51,13 +54,13 @@ X_train = np.array(X_train)
 Y_train = np.array(Y_train)
 
 
-# Hyper-parameters 
-num_epochs = 800
-batch_size = 8
-learning_rate = 0.001
+# Parameters 
 input_size = len(X_train[0])
-hidden_size = 8
 output_size = len(tags)
+batch_size = 8
+hidden_size = 8
+learning_rate = 0.001
+epochs = 800
 
 class ChatDataset(Dataset):
 
@@ -74,12 +77,7 @@ class ChatDataset(Dataset):
         return self.n_samples
 
 dataset = ChatDataset()
-train_loader = DataLoader(dataset=dataset,
-                          batch_size=batch_size,
-                          shuffle=True,
-                          num_workers=0)
-
-
+train = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_workers=0)
 
 
 model = Nnt(input_size, hidden_size, output_size)
@@ -87,13 +85,12 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
-for epoch in range(num_epochs):
-    for (words, labels) in train_loader:
+for epoch in range(epochs):
+    for (words, labels) in train:
         words = words
         labels = labels.to(dtype=torch.long)
 
         outputs = model(words)
-        # labels = torch.max(labels, 1)[1]
         loss = criterion(outputs, labels)
         
         optimizer.zero_grad()
@@ -101,7 +98,7 @@ for epoch in range(num_epochs):
         optimizer.step()
         
     if (epoch+1) % 100 == 0:
-        print (f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+        print (f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
 
 data = {
 "model_state": model.state_dict(),

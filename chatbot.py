@@ -1,9 +1,7 @@
 import random
 import json
 import torch
-import re
 import datetime
-import os
 
 
 from model import Nnt
@@ -61,37 +59,35 @@ while True:
     tag = tags[predicted.item()]
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
-    if prob.item() >= 0.75:
+    if prob.item() >= 0.7:
         name_of_doc = ""
         time = nbr_pages = 0
         for intent in intents['intents']:
             if tag == intent["tag"]:
                 if tag == 'print':
                     for word in sent:
-                        if word.startswith("doc"):
+                        if word.startswith("doc") and word != "document":
                             name_of_doc = word
                         if word.isdigit():
                             nbr_pages = int(word)
                             time = date.time().hour*3600 + date.time().minute*60 + date.time().second
-                    if time >= counter:
-                        beg = max(time,cc)
-                        counter = beg + nbr_pages
+                    if nbr_pages > 0 and name_of_doc != "":
+                        if time >= counter:
+                            beg = max(time,cc)
+                            counter = beg + nbr_pages
+                            begin_t = datetime.timedelta(seconds=beg)
+                            end_t = datetime.timedelta(seconds=counter)
+                        else:
+                            beg = max(counter,cc)
+                            begin_t = datetime.timedelta(seconds=beg)
+                            counter = counter + nbr_pages
+                            end_t = datetime.timedelta(seconds=counter)
                         cc = counter
-                        begin_t = datetime.timedelta(seconds=beg)
-                        end_t = datetime.timedelta(seconds=counter)
                         count.write(str(counter))
-                    else:
-                        beg = max(counter,cc)
-                        begin_t = datetime.timedelta(seconds=beg)
-                        counter = counter + nbr_pages
-                        cc = counter
-                        end_t = datetime.timedelta(seconds=counter)
-                        count.write(str(counter))
-                    if nbr_pages > 0 :
                         print(f"{bot_name}: {random.choice(intent['responses'])}")                        
-                        agenda.write("\n" +'"'+ str(datetime.datetime.today().strftime('%Y-%m-%d')) +'"\t'+ "from: " + str(begin_t) + "\t" +"to:"+ str(end_t) + "\t" + "name of doc: " +name_of_doc + "\n")                            
+                        agenda.write("\n" +'"'+ str(datetime.datetime.today().strftime('%Y-%m-%d')) +'"\t'+ "from: " + '"' + str(begin_t) + '"\t' +"to: " + '"' + str(end_t) + '"\t' + "name_of_doc: " + '"' + name_of_doc + '"' + "\n")                            
                     else:
-                        print(f"{bot_name}: \n\tSorry ! I can't print a doc without it name and number of pages it contains")
+                        print(f"{bot_name}: \n\tSorry ! I can't print a document without the name and the number of pages it contains\n\tthe name should begin with doc... ")
                 else:
                     print(f"{bot_name}: {random.choice(intent['responses'])}")
     else:
@@ -99,24 +95,6 @@ while True:
     
     report.write("\n" +'"'+ sentence +'"'+ "\t" + str(date)+"\t" + tag + "\n")
     
-    # if tag == 'print':
-        # name_of_doc = ""
-        # time = nbr_pages = 0
-        # for word in sent:
-        #     if word.isdigit():
-        #         nbr_pages = int(word)
-        #         time = date.time().hour*3600 + date.time().minute*60 + date.time().second
-        #     if  re.findall(r'\bdoc\w+', word):
-        #         name_of_doc = word
-        # if time >= counter:
-        #     counter = time + nbr_pages
-        # else:
-        #     counter = counter + nbr_pages
-    
-        # # trosform seconds to time
-        # begin = str(datetime.timedelta(seconds=counter))
-        # agenda.write("\n" +'"'+ str(datetime.datetime.today().strftime('%Y-%m-%d')) +'"'+ "\t" + begin + "\t" + name_of_doc + "\n")
-
+    count.close()
     report.close()
     agenda.close()
-    count.close()

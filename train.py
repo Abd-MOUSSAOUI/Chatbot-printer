@@ -60,7 +60,7 @@ output_size = len(tags)
 batch_size = 8
 hidden_size = 8
 learning_rate = 0.001
-epochs = 800
+epochs = 1000
 
 class ChatDataset(Dataset):
 
@@ -81,7 +81,7 @@ train = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True, num_wor
 
 
 model = Nnt(input_size, hidden_size, output_size)
-criterion = nn.CrossEntropyLoss()
+loss = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
@@ -91,14 +91,16 @@ for epoch in range(epochs):
         labels = labels.to(dtype=torch.long)
 
         outputs = model(words)
-        loss = criterion(outputs, labels)
+        loss_ = loss(outputs, labels)
         
         optimizer.zero_grad()
-        loss.backward()
+        loss_.backward()
         optimizer.step()
         
-    if (epoch+1) % 100 == 0:
-        print (f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+    #if (epoch+1) % 100 == 0:
+    #    print (f'Epoch [{epoch+1}/{epochs}], Loss: {loss_.item():.4f}')
+print (f'Epoch [{epoch+1}/{epochs}], Loss: {loss_.item():.4f}')
+print ("\nTrain complete... The ChatBot is ready :-)\n")
 
 data = {
 "model_state": model.state_dict(),

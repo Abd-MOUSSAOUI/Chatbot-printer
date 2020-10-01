@@ -30,6 +30,9 @@ bot_name = "Printer-Bot"
 print("\t --> Bonjour, je suis un Chatbot qui organise l'impression des document. \n\tJe peux vous aidez à imprimer un documents \n\tPour cela, il suffit juste de me dire le nom du documents et combien de pages il cotient.. \n\tPar ex: je veux imprimer Doc1 qui cotient 2345 pages\n\n\tTape quit or bye pour sortir")
 
 while True:
+    
+    sentence = input("You: ")
+    
     count = open('count.txt', 'a')
     count = open('count.txt', 'r')
     cc = count.read()
@@ -41,8 +44,7 @@ while True:
     count = open('count.txt', 'r+')
     report = open("report.txt", "a")
     agenda = open("agenda.txt", "a")
-    
-    sentence = input("You: ")
+
     if (sentence == "quit" or sentence == "bye"):
         print("Printer-Bot: Au revoir :)")
         break

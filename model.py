@@ -10,9 +10,10 @@ class Nnt(nn.Module):
         self.relu = nn.ReLU()
     
     def forward(self, x):
-        out = self.relu(x)
-        out = self.lin1(out)
+        out = self.lin1(x)
+        out = self.relu(out)
         out = self.lin2(out)
+        out = self.relu(out)
         out = self.lin3(out)
         return out
 
